@@ -1,9 +1,10 @@
-const { Model } = require("objection");
-const Knex = require("knex");
-const knexConfig = require("../../database/knexfile");
+import knexConfig from "../../database/knexfile";
+import { Model, RelationMappings } from "objection";
+import Knex from "knex";
 
 const knexObj = Knex(knexConfig);
 Model.knex(knexObj);
+
 
 export default class PatientObjection extends Model {
 
@@ -15,13 +16,13 @@ export default class PatientObjection extends Model {
 		return "patient_id";
 	}
 
-	static get relationMappings() {
+	static get relationMappings(): RelationMappings {
 		const Appointment = require("./Appointment.objection");
 
 		return {
 			appointments: {
 				relation: Model.HasManyRelation,
-				classModel: Appointment,
+				modelClass: Appointment,
 				join: {
 					from: "patients.patient_id",
 					to: "appointments.patient_id",

@@ -23,7 +23,7 @@ if(process.env.DB_SOCKET) {
 }
 
 let knexConfig: KnexConfig = {
-  client: 'mysql',
+  client: "mysql",
   connection: connection,
   pool: {
     min: 2,

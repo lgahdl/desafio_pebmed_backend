@@ -24,7 +24,7 @@ export default class AppointmentObjection extends Model {
 				modelClass: Patient,
 				join: {
 					from: "appointments.patient_id",
-					to: "pacients.patient_id",
+					to: "patients.patient_id",
 				}
 			}
 		}

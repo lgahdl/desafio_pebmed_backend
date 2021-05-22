@@ -1,7 +1,7 @@
-require('express');
-const router = express.Router();
+import express from 'express';
+import v1Router from './v1';
 
-const v1Router = require('./v1');
+const router = express.Router();
 
 router.use('/v1',v1Router);
 

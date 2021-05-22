@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,25 +9,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const app_1 = __importDefault(require("./app"));
 // @ts-ignore
-const ErrnoException = NodeJS.ErrnoException;
 require('dotenv').config();
 /**
  * Module dependencies.
  */
-var app = require('../app.ts');
 var debug = require('debug')('xml-to-db:server');
 var http = require('http');
-const InitializeDb = require('../database/initializeDatabase');
+const InitializeDb = require('./database/initializeDatabase');
 /**
  * Get port from environment and store in Express.
  */
 var port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
+app_1.default.set('port', port);
 /**
  * Create HTTP server.
  */
-var server = http.createServer(app);
+var server = http.createServer(app_1.default);
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -89,4 +93,4 @@ function onListening() {
         debug('Listening on ' + bind);
     });
 }
-//# sourceMappingURL=www.js.map
+//# sourceMappingURL=index.js.map

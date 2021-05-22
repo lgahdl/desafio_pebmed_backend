@@ -1,14 +1,14 @@
 import express from 'express';
-import PatientsService from "../../services/patients.service.interface";
 import { Container, Inject } from 'typedi';
+import AppointmentsService from "../../services/appointments.service.interface";
 
 const router = express.Router();
 
-const patientsService = Container.get<PatientsService>('patients.service');
+const appointmentsService = Container.get<AppointmentsService>('appointments.service');
 
 router.get("/", async (req, res, next) => {
 	try {
-		const response = await patientsService.findAll();
+		const response = await appointmentsService.findAll();
 		return res.send(response);
 	} catch (error) {
 		return next(error);
@@ -17,7 +17,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
 	try {
-		const response = await patientsService.findById(parseInt(req.params.id));
+		const response = await appointmentsService.findById(parseInt(req.params.id));
 		return res.send(response);
 	} catch (error) {
 		return next(error);
@@ -26,7 +26,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
 	try {
-		const response = await patientsService.post(req.body);
+		const response = await appointmentsService.post(req.body);
 		return res.send(response);
 	} catch (error) {
 		return next(error);
@@ -35,7 +35,7 @@ router.post("/", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
 	try {
-		const response = await patientsService.put(req.body);
+		const response = await appointmentsService.put(req.body);
 		return res.send(response);
 	} catch (error) {
 		return next(error);
@@ -44,7 +44,7 @@ router.put("/:id", async (req, res, next) => {
 
 router.delete("/:id", async (req, res, next) => {
 	try {
-		const response = await patientsService.delete(parseInt(req.params.id));
+		const response = await appointmentsService.delete(parseInt(req.params.id));
 		return res.send(response);
 	} catch (error) {
 		return next(error);

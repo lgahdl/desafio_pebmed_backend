@@ -3,12 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express = require('express');
-const router = express.Router();
+const express_1 = __importDefault(require("express"));
 const errorDictionary_1 = __importDefault(require("../../helpers/errorDictionary"));
+const patients_1 = __importDefault(require("./patients"));
+const router = express_1.default.Router();
 /**
  * ROUTES
  */
+router.use("/patients", patients_1.default);
 router.use((err, req, res, next) => {
     let errObj;
     if (!err) {
@@ -47,5 +49,5 @@ router.use((err, req, res, next) => {
     res.status(errObj.statusCode || errObj.err.status || 500);
     res.render('error');
 });
-module.exports = router;
+exports.default = router;
 //# sourceMappingURL=index.js.map

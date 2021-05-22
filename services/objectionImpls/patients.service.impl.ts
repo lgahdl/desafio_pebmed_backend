@@ -2,9 +2,11 @@ import PatientsService from "../patients.service.interface";
 import { Patient } from "../../types/Patient.type";
 import PatientObjection from "../../models/objection/Patient.objection";
 import PatientModel from "../../models/Patient.model";
-
+import { Container, Service } from "typedi";
 
 export default class PatientsServiceImpl implements PatientsService {
+
+	constructor() {}
 
 	async findById(id: number): Promise<Patient> {
 		return new PatientModel(await PatientObjection.query().findById(id));
