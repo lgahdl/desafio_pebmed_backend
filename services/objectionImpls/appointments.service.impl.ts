@@ -2,16 +2,21 @@ import AppointmentsService from "../appointments.service.interface";
 import { Appointment } from "../../types/Appointment.type";
 import AppointmentObjection from "../../models/objection/Appointment.objection";
 import AppointmentModel from "../../models/Appointment.model";
-
+import { pickBy, identity } from 'lodash';
+import errorDictionary from "../../helpers/errorDictionary";
 
 export default class AppointmentsServiceImpl implements AppointmentsService {
 
 	async findById(id: number): Promise<Appointment> {
-		return new AppointmentModel(await AppointmentObjection.query().findById(id));
+		let appointment = await AppointmentObjection.query().withGraphFetched('[patient]').findById(id);
+		if (!appointment) {
+			throw errorDictionary.NOT_FOUND;
+		}
+		return new AppointmentModel(appointment);
 	}
 
 	async findAll(): Promise<Appointment[]> {
-		let appointments: AppointmentObjection[] = await AppointmentObjection.query();
+		let appointments: AppointmentObjection[] = await AppointmentObjection.query().withGraphFetched(['patients']);
 		return appointments.map((appointment) => new AppointmentModel(appointment));
 	}
 
@@ -28,13 +33,12 @@ export default class AppointmentsServiceImpl implements AppointmentsService {
 		}
 	}
 
-	async put(appointment: Appointment): Promise<Appointment> {
+	async patch(id: number, appointment: Appointment): Promise<Appointment> {
 		const trx = await AppointmentObjection.startTransaction();
 		try {
-			// @ts-ignore
-			const appointmentInserted = new AppointmentModel(await AppointmentObjection.query(trx).findById(appointment.appointment_id).update(appointment));
+			await AppointmentObjection.query(trx).findById(id).patch(pickBy(appointment, identity));
 			await trx.commit();
-			return appointmentInserted;
+			return await this.findById(id);
 		} catch (error) {
 			await trx.rollback();
 			throw error;
@@ -44,13 +48,15 @@ export default class AppointmentsServiceImpl implements AppointmentsService {
 	async delete(id: number): Promise<boolean> {
 		const trx = await AppointmentObjection.startTransaction();
 		try {
-			// @ts-ignore
-			await AppointmentObjection.query(trx).deleteById(id);
+			let deleteById = await AppointmentObjection.query(trx).deleteById(id);
+			if (deleteById == 0) {
+				throw errorDictionary.NOT_FOUND;
+			}
 			await trx.commit();
 			return true;
 		} catch (error) {
 			await trx.rollback();
-			return false
+			throw error;
 		}
 	}
 

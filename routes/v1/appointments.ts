@@ -1,6 +1,7 @@
 import express from 'express';
 import { Container, Inject } from 'typedi';
 import AppointmentsService from "../../services/appointments.service.interface";
+import adapter from '../../adapters/appointments.adapter';
 
 const router = express.Router();
 
@@ -8,8 +9,8 @@ const appointmentsService = Container.get<AppointmentsService>('appointments.ser
 
 router.get("/", async (req, res, next) => {
 	try {
-		const response = await appointmentsService.findAll();
-		return res.send(response);
+		const appointments = await appointmentsService.findAll();
+		return res.send(appointments.map((appointment) => adapter.toJson(appointment)));
 	} catch (error) {
 		return next(error);
 	}
@@ -17,8 +18,8 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
 	try {
-		const response = await appointmentsService.findById(parseInt(req.params.id));
-		return res.send(response);
+		const appointment = await appointmentsService.findById(parseInt(req.params.id));
+		return res.send(adapter.toJson(appointment));
 	} catch (error) {
 		return next(error);
 	}
@@ -26,17 +27,17 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
 	try {
-		const response = await appointmentsService.post(req.body);
-		return res.send(response);
+		const appointment = await appointmentsService.post(req.body);
+		return res.status(201).send(adapter.toJson(appointment));
 	} catch (error) {
 		return next(error);
 	}
 });
 
-router.put("/:id", async (req, res, next) => {
+router.patch("/:id", async (req, res, next) => {
 	try {
-		const response = await appointmentsService.put(req.body);
-		return res.send(response);
+		const appointment = await appointmentsService.patch(parseInt(req.params.id), adapter.toJson(req.body));
+		return res.send(adapter.toJson(appointment));
 	} catch (error) {
 		return next(error);
 	}
@@ -45,7 +46,7 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
 	try {
 		const response = await appointmentsService.delete(parseInt(req.params.id));
-		return res.send(response);
+		return res.status(204).send(response);
 	} catch (error) {
 		return next(error);
 	}

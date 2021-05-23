@@ -2,7 +2,6 @@
 import { app, initializeApp } from './app'
 import injectDependencies from "./dependencies";
 import InitializeDatabase from "./database/initializeDatabase";
-
 // @ts-ignore
 
 require('dotenv').config();
@@ -13,7 +12,6 @@ require('dotenv').config();
 
 var debug = require('debug')('xml-to-db:server');
 var http = require('http');
-const InitializeDb = require('./database/initializeDatabase');
 
 /**
  * Get port from environment and store in Express.
@@ -86,6 +84,7 @@ function onError(error: NodeJS.ErrnoException) {
  */
 
 async function onListening() {
+
 	await InitializeDatabase.initializeDatabase();
 	await InitializeDatabase.initializeObjection();
 	injectDependencies();

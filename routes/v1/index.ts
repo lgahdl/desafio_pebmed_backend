@@ -1,7 +1,7 @@
 import express from 'express';
 import errorDictionary from '../../helpers/errorDictionary';
 import patientsRouter from './patients';
-import appointmentsRouter from './appoitments';
+import appointmentsRouter from './appointments';
 
 const router = express.Router();
 

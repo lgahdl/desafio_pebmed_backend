@@ -1,9 +1,11 @@
 import { Appointment } from "../types/Appointment.type";
+import { GenderEnum } from "../enums/gender.enum";
 
 export default class PatientModel {
 
 	private _patient_id: number;
 	private _name: string;
+	private _gender: GenderEnum;
 	private _height: number;
 	private _weight: number;
 	private _phone_number: string;
@@ -13,15 +15,17 @@ export default class PatientModel {
 	private _appointments?: Appointment[];
 
 	constructor(props: any) {
-		this.patient_id = props.patient_id;
-		this.name = props.name;
-		this.height = props.height;
-		this.weight = props.weight;
-		this.phone_number = props.phone_number;
-		this.birthday = props.birthday;
-		this.created_at = props.created_at;
-		this.updated_at = props.updated_at;
-		this.appointments = props.appointments;
+		console.log(props);
+		this.patient_id = props.patient_id ?? undefined;
+		this.name = props.name ?? undefined;
+		this.gender = props.gender ?? undefined;
+		this.height = props.height ?? undefined;
+		this.weight = props.weight ?? undefined;
+		this.phone_number = props.phone_number ?? undefined;
+		this.birthday = props.birthday ?? undefined;
+		this.created_at = props.created_at ?? undefined;
+		this.updated_at = props.updated_at ?? undefined;
+		this.appointments = props.appointments ?? undefined;
 	}
 
 
@@ -39,6 +43,15 @@ export default class PatientModel {
 
 	set name(value: string) {
 		this._name = value;
+	}
+
+
+	get gender(): GenderEnum {
+		return this._gender;
+	}
+
+	set gender(value: GenderEnum) {
+		this._gender = value;
 	}
 
 	get height(): number {

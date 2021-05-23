@@ -1,6 +1,7 @@
 import knexConfig from "../../database/knexfile";
 import { Model, RelationMappings } from "objection";
 import Knex from "knex";
+import Appointment from "./Appointment.objection";
 
 const knexObj = Knex(knexConfig);
 Model.knex(knexObj);
@@ -17,8 +18,6 @@ export default class PatientObjection extends Model {
 	}
 
 	static get relationMappings(): RelationMappings {
-		const Appointment = require("./Appointment.objection");
-
 		return {
 			appointments: {
 				relation: Model.HasManyRelation,
@@ -38,6 +37,7 @@ export default class PatientObjection extends Model {
 			properties: {
 				patient_id: { type: "integer" },
 				name: { type: "string" },
+				gender: { type: "enum" },
 				height: { type: "decimal" },
 				weight: { type: "decimal" },
 				phone_number: { type: "string" },

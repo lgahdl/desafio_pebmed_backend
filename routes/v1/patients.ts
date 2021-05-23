@@ -2,14 +2,16 @@ import express from 'express';
 import PatientsService from "../../services/patients.service.interface";
 import { Container, Inject } from 'typedi';
 
+import adapter from '../../adapters/patients.adapter';
+
 const router = express.Router();
 
 const patientsService = Container.get<PatientsService>('patients.service');
 
 router.get("/", async (req, res, next) => {
 	try {
-		const response = await patientsService.findAll();
-		return res.send(response);
+		const patients = await patientsService.findAll()
+		return res.send(patients.map((patientModel) => adapter.toJson(patientModel)));
 	} catch (error) {
 		return next(error);
 	}
@@ -17,8 +19,8 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
 	try {
-		const response = await patientsService.findById(parseInt(req.params.id));
-		return res.send(response);
+		const patients = await patientsService.findById(parseInt(req.params.id));
+		return res.send(adapter.toJson(patients));
 	} catch (error) {
 		return next(error);
 	}
@@ -26,17 +28,18 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
 	try {
-		const response = await patientsService.post(req.body);
-		return res.send(response);
+		const patient = await patientsService.post(req.body);
+		return res.status(201).send(adapter.toJson(patient));
 	} catch (error) {
 		return next(error);
 	}
 });
 
-router.put("/:id", async (req, res, next) => {
+router.patch("/:id", async (req, res, next) => {
 	try {
-		const response = await patientsService.put(req.body);
-		return res.send(response);
+		console.log(req.params.id);
+		const patient = await patientsService.patch(parseInt(req.params.id), req.body);
+		return res.send(adapter.toJson(patient));
 	} catch (error) {
 		return next(error);
 	}
@@ -45,7 +48,7 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/:id", async (req, res, next) => {
 	try {
 		const response = await patientsService.delete(parseInt(req.params.id));
-		return res.send(response);
+		return res.status(204).send(response);
 	} catch (error) {
 		return next(error);
 	}

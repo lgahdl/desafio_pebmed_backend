@@ -1,11 +1,5 @@
-import { Container } from "typedi";
-import PatientsServiceImpl from "./services/objectionImpls/patients.service.impl";
-import InitializeDatabase from "./database/initializeDatabase";
-import injectDependencies from "./dependencies";
 import express from "express";
-
-InitializeDatabase.initializeDatabase();
-InitializeDatabase.initializeObjection();
+import cors from 'cors';
 
 let app = express();
 
@@ -19,6 +13,7 @@ const initializeApp = () => {
 	app.set('views', path.join(__dirname, 'views'));
 	app.set('view engine', 'pug');
 
+	app.use(cors());
 	app.use(logger('dev'));
 	app.use(express.json());
 	app.use(express.urlencoded({ extended: false }));
