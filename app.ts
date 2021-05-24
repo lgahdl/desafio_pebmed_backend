@@ -23,11 +23,7 @@ const initializeApp = () => {
 // API Routes
 	const versionRouter = require('./routes');
 	app.use('/', versionRouter);
-
-// Configure API Documentation
-	const swaggerUi = require('swagger-ui-express');
-	const YAML = require('yamljs');
-	const swaggerDocument = YAML.load('./documentation/swagger.yaml');
+	
 }
 
 export { initializeApp, app };
