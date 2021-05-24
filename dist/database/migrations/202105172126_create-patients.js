@@ -4,6 +4,7 @@ exports.up = function (knex) {
     return knex.schema.createTable('patients', (table) => {
         table.increments("patient_id").notNullable().primary();
         table.string("name", 100).nullable().defaultTo(null);
+        table.enu('gender', ['MALE', 'FEMALE', 'OTHER']).nullable().defaultTo(null);
         table.decimal("height", 15, 2).nullable().defaultTo(null);
         table.decimal("weight", 15, 2).nullable().defaultTo(null);
         table.string("phone_number", 40).nullable().defaultTo(null);

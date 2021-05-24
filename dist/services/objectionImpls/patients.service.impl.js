@@ -14,10 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Patient_objection_1 = __importDefault(require("../../models/objection/Patient.objection"));
 const Patient_model_1 = __importDefault(require("../../models/Patient.model"));
+const lodash_1 = require("lodash");
+const errorDictionary_1 = __importDefault(require("../../helpers/errorDictionary"));
 class PatientsServiceImpl {
+    constructor() { }
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return new Patient_model_1.default(yield Patient_objection_1.default.query().findById(id));
+            const patient = yield Patient_objection_1.default.query().withGraphFetched('[appointments]').findById(id);
+            if (!patient) {
+                throw errorDictionary_1.default.NOT_FOUND;
+            }
+            return new Patient_model_1.default(patient);
         });
     }
     findAll() {
@@ -41,14 +48,13 @@ class PatientsServiceImpl {
             }
         });
     }
-    put(patient) {
+    patch(id, patient) {
         return __awaiter(this, void 0, void 0, function* () {
             const trx = yield Patient_objection_1.default.startTransaction();
             try {
-                // @ts-ignore
-                const patientInserted = new Patient_model_1.default(yield Patient_objection_1.default.query(trx).findById(patient.patient_id).update(patient));
+                new Patient_model_1.default(yield Patient_objection_1.default.query(trx).findById(id).update(lodash_1.pickBy(patient, lodash_1.identity)));
                 yield trx.commit();
-                return patientInserted;
+                return yield this.findById(id);
             }
             catch (error) {
                 yield trx.rollback();
@@ -61,13 +67,16 @@ class PatientsServiceImpl {
             const trx = yield Patient_objection_1.default.startTransaction();
             try {
                 // @ts-ignore
-                yield Patient_objection_1.default.query(trx).deleteById(id);
+                let deleteById = yield Patient_objection_1.default.query(trx).deleteById(id);
+                if (deleteById == 0) {
+                    throw errorDictionary_1.default.NOT_FOUND;
+                }
                 yield trx.commit();
                 return true;
             }
             catch (error) {
                 yield trx.rollback();
-                return false;
+                throw error;
             }
         });
     }

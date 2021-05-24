@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const errorDictionary_1 = __importDefault(require("../../helpers/errorDictionary"));
 const patients_1 = __importDefault(require("./patients"));
+const appointments_1 = __importDefault(require("./appointments"));
 const router = express_1.default.Router();
 /**
  * ROUTES
  */
 router.use("/patients", patients_1.default);
+router.use("/appointments", appointments_1.default);
 router.use((err, req, res, next) => {
     let errObj;
     if (!err) {

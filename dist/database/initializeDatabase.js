@@ -20,6 +20,7 @@ const connectionError = (err) => {
     console.error(err);
     process.kill(process.pid, 'SIGTERM');
 };
+let knexObj;
 class InitializeDatabase {
     static initializeDatabase() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -35,10 +36,10 @@ class InitializeDatabase {
             const knexSchemaObj = knex_1.default(knexSchemaConnection);
             yield knexSchemaObj.raw(`CREATE DATABASE IF NOT EXISTS \`${knexSchema}\``);
             yield knexSchemaObj.destroy();
-            this.knexObj = knex_1.default(knexfile_1.default);
+            knexObj = knex_1.default(knexfile_1.default);
             // This function updates database to last version, but also identifies if db credentials are correct
             try {
-                yield this.knexObj.migrate.latest();
+                yield knexObj.migrate.latest();
             }
             catch (err) {
                 // If an error occurs during DB connection, kills application gracefully
@@ -46,17 +47,17 @@ class InitializeDatabase {
             }
             // Inserts testing data into DB (based on testing seeds folder)
             if (process.env.NODE_ENV === 'test') {
-                yield this.knexObj.seed.run();
+                yield knexObj.seed.run();
             }
-            yield this.knexObj.destroy();
+            yield knexObj.destroy();
             return;
         });
     }
     static clearDatabase() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.knexObj) {
+            if (knexObj) {
                 try {
-                    yield this.knexObj.destroy();
+                    yield knexObj.destroy();
                 }
                 catch (err) {
                     console.warn(err);
@@ -74,16 +75,16 @@ class InitializeDatabase {
     }
     static initializeObjection() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.knexObj) {
+            if (knexObj) {
                 try {
-                    yield this.knexObj.destroy();
+                    yield knexObj.destroy();
                 }
                 catch (err) {
                     console.warn(err);
                 }
             }
-            this.knexObj = knex_1.default(knexfile_1.default);
-            objection_1.Model.knex(this.knexObj);
+            knexObj = knex_1.default(knexfile_1.default);
+            objection_1.Model.knex(knexObj);
             return;
         });
     }

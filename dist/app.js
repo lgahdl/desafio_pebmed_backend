@@ -3,29 +3,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const typedi_1 = require("typedi");
-const patients_service_impl_1 = __importDefault(require("./services/objectionImpls/patients.service.impl"));
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var app = express();
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-// API Routes
-const versionRouter = require('./routes');
-app.use('/', versionRouter);
-typedi_1.Container.set('patients.service', new patients_service_impl_1.default());
-// Configure API Documentation
-const swaggerUi = require('swagger-ui-express');
-const YAML = require('yamljs');
-const swaggerDocument = YAML.load('./documentation/swagger.yaml');
-exports.default = app;
+exports.app = exports.initializeApp = void 0;
+const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
+let app = express_1.default();
+exports.app = app;
+const initializeApp = () => {
+    let createError = require('http-errors');
+    let path = require('path');
+    let cookieParser = require('cookie-parser');
+    let logger = require('morgan');
+    // view engine setup
+    app.set('views', path.join(__dirname, 'views'));
+    app.set('view engine', 'pug');
+    app.use(cors_1.default());
+    app.use(logger('dev'));
+    app.use(express_1.default.json());
+    app.use(express_1.default.urlencoded({ extended: false }));
+    app.use(cookieParser());
+    app.use(express_1.default.static(path.join(__dirname, 'public')));
+    // API Routes
+    const versionRouter = require('./routes');
+    app.use('/', versionRouter);
+};
+exports.initializeApp = initializeApp;
 //# sourceMappingURL=app.js.map

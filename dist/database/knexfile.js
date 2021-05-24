@@ -20,7 +20,7 @@ else {
     connection.port = process.env.DB_PORT ? process.env.DB_PORT : 3306;
 }
 let knexConfig = {
-    client: 'mysql',
+    client: "mysql",
     connection: connection,
     pool: {
         min: 2,

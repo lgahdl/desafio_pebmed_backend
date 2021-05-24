@@ -32,15 +32,6 @@ class Utils {
         }
         throw new Error("Unable to copy obj! Its type isn't supported.");
     }
-    static validateEmail(email) {
-        const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(String(email).toLowerCase());
-    }
-    static validatePassword(password) {
-        var _a;
-        const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
-        return ((_a = password === null || password === void 0 ? void 0 : password.match(pattern)) === null || _a === void 0 ? void 0 : _a.length) > 0;
-    }
 }
 exports.default = Utils;
 //# sourceMappingURL=utils.js.map

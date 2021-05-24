@@ -2,25 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class AppointmentModel {
     constructor(props) {
-        this.appointment_id = props.appointment_id;
-        this.date = props.date;
-        this.patient_id = props.patient_id;
-        this.annotations = props.annotations;
-        this.created_at = props.created_at;
-        this.updated_at = props.updated_at;
-        this.patient = props.patient;
-    }
-    toAppointment() {
-        const { appointment_id, date, patient_id, annotations, created_at, updated_at, patient } = this;
-        return {
-            appointment_id,
-            date,
-            patient_id,
-            annotations,
-            created_at,
-            updated_at,
-            patient,
-        };
+        var _a, _b, _c, _d, _e, _f, _g;
+        this.appointment_id = (_a = props.appointment_id) !== null && _a !== void 0 ? _a : undefined;
+        this.date = (_b = props.date) !== null && _b !== void 0 ? _b : undefined;
+        this.patient_id = (_c = props.patient_id) !== null && _c !== void 0 ? _c : undefined;
+        this.annotations = (_d = props.annotations) !== null && _d !== void 0 ? _d : undefined;
+        this.created_at = (_e = props.created_at) !== null && _e !== void 0 ? _e : undefined;
+        this.updated_at = (_f = props.updated_at) !== null && _f !== void 0 ? _f : undefined;
+        this.patient = (_g = props.patient) !== null && _g !== void 0 ? _g : undefined;
     }
     get appointment_id() {
         return this._appointment_id;

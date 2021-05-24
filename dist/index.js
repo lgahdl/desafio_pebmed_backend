@@ -13,24 +13,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = __importDefault(require("./app"));
+const app_1 = require("./app");
+const dependencies_1 = __importDefault(require("./dependencies"));
+const initializeDatabase_1 = __importDefault(require("./database/initializeDatabase"));
 // @ts-ignore
 require('dotenv').config();
 /**
  * Module dependencies.
  */
-var debug = require('debug')('xml-to-db:server');
+var debug = require('debug')('desafio_pebmeb_backend:server');
 var http = require('http');
-const InitializeDb = require('./database/initializeDatabase');
 /**
  * Get port from environment and store in Express.
  */
 var port = normalizePort(process.env.PORT || '3000');
-app_1.default.set('port', port);
+app_1.app.set('port', port);
 /**
  * Create HTTP server.
  */
-var server = http.createServer(app_1.default);
+var server = http.createServer(app_1.app);
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -81,11 +82,13 @@ function onError(error) {
  */
 function onListening() {
     return __awaiter(this, void 0, void 0, function* () {
+        yield initializeDatabase_1.default.initializeDatabase();
+        yield initializeDatabase_1.default.initializeObjection();
+        dependencies_1.default();
+        app_1.initializeApp();
         /**
          * Configure Database
          */
-        yield InitializeDb.initializeDatabase();
-        yield InitializeDb.initializeObjection();
         var addr = server.address();
         var bind = typeof addr === 'string'
             ? 'pipe ' + addr

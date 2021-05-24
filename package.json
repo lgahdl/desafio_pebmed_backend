@@ -5,9 +5,7 @@
   "scripts": {
     "dev": "nodemon",
     "pretest": "yarn install",
-    "test": "jest",
-    "prestart": "yarn install",
-    "start": "tsc *.ts --watch & node index.ts"
+    "build": "tsc & set PORT=8080 & node dist"
   },
   "dependencies": {
     "@types/lodash": "^4.14.170",

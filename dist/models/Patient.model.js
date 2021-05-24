@@ -2,15 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class PatientModel {
     constructor(props) {
-        this.patient_id = props.patient_id;
-        this.name = props.name;
-        this.height = props.height;
-        this.weight = props.weight;
-        this.phone_number = props.phone_number;
-        this.birthday = props.birthday;
-        this.created_at = props.created_at;
-        this.updated_at = props.updated_at;
-        this.appointments = props.appointments;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        this.patient_id = (_a = props.patient_id) !== null && _a !== void 0 ? _a : undefined;
+        this.name = (_b = props.name) !== null && _b !== void 0 ? _b : undefined;
+        this.gender = (_c = props.gender) !== null && _c !== void 0 ? _c : undefined;
+        this.height = (_d = props.height) !== null && _d !== void 0 ? _d : undefined;
+        this.weight = (_e = props.weight) !== null && _e !== void 0 ? _e : undefined;
+        this.phone_number = (_f = props.phone_number) !== null && _f !== void 0 ? _f : undefined;
+        this.birthday = (_g = props.birthday) !== null && _g !== void 0 ? _g : undefined;
+        this.created_at = (_h = props.created_at) !== null && _h !== void 0 ? _h : undefined;
+        this.updated_at = (_j = props.updated_at) !== null && _j !== void 0 ? _j : undefined;
+        this.appointments = (_k = props.appointments) !== null && _k !== void 0 ? _k : undefined;
     }
     get patient_id() {
         return this._patient_id;
@@ -23,6 +25,12 @@ class PatientModel {
     }
     set name(value) {
         this._name = value;
+    }
+    get gender() {
+        return this._gender;
+    }
+    set gender(value) {
+        this._gender = value;
     }
     get height() {
         return this._height;

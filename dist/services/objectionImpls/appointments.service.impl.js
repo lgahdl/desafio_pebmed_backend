@@ -14,15 +14,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Appointment_objection_1 = __importDefault(require("../../models/objection/Appointment.objection"));
 const Appointment_model_1 = __importDefault(require("../../models/Appointment.model"));
+const lodash_1 = require("lodash");
+const errorDictionary_1 = __importDefault(require("../../helpers/errorDictionary"));
 class AppointmentsServiceImpl {
     findById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return new Appointment_model_1.default(yield Appointment_objection_1.default.query().findById(id));
+            let appointment = yield Appointment_objection_1.default.query().withGraphFetched('[patient]').findById(id);
+            if (!appointment) {
+                throw errorDictionary_1.default.NOT_FOUND;
+            }
+            return new Appointment_model_1.default(appointment);
         });
     }
     findAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            let appointments = yield Appointment_objection_1.default.query();
+            let appointments = yield Appointment_objection_1.default.query().withGraphFetched('[patient]');
             return appointments.map((appointment) => new Appointment_model_1.default(appointment));
         });
     }
@@ -33,7 +39,7 @@ class AppointmentsServiceImpl {
                 // @ts-ignore
                 const appointmentInserted = new Appointment_model_1.default(yield Appointment_objection_1.default.query(trx).insert(appointment));
                 yield trx.commit();
-                return appointmentInserted;
+                return yield this.findById(appointmentInserted.appointment_id);
             }
             catch (error) {
                 yield trx.rollback();
@@ -41,14 +47,13 @@ class AppointmentsServiceImpl {
             }
         });
     }
-    put(appointment) {
+    patch(id, appointment) {
         return __awaiter(this, void 0, void 0, function* () {
             const trx = yield Appointment_objection_1.default.startTransaction();
             try {
-                // @ts-ignore
-                const appointmentInserted = new Appointment_model_1.default(yield Appointment_objection_1.default.query(trx).findById(appointment.appointment_id).update(appointment));
+                yield Appointment_objection_1.default.query(trx).findById(id).patch(lodash_1.pickBy(appointment, lodash_1.identity));
                 yield trx.commit();
-                return appointmentInserted;
+                return yield this.findById(id);
             }
             catch (error) {
                 yield trx.rollback();
@@ -60,14 +65,16 @@ class AppointmentsServiceImpl {
         return __awaiter(this, void 0, void 0, function* () {
             const trx = yield Appointment_objection_1.default.startTransaction();
             try {
-                // @ts-ignore
-                yield Appointment_objection_1.default.query(trx).deleteById(id);
+                let deleteById = yield Appointment_objection_1.default.query(trx).deleteById(id);
+                if (deleteById == 0) {
+                    throw errorDictionary_1.default.NOT_FOUND;
+                }
                 yield trx.commit();
                 return true;
             }
             catch (error) {
                 yield trx.rollback();
-                return false;
+                throw error;
             }
         });
     }
