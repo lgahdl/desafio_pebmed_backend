@@ -12,15 +12,15 @@ export default class AppointmentModel {
 	private _patient: Patient;
 
 	constructor(props: any) {
-		this.appointment_id = props.appointment_id || undefined;
-		this.date = props.date || undefined;
-		this.patient_id = props.patient_id || undefined;
-		this.annotations = props.annotations || undefined;
-		this.created_at = props.created_at || undefined;
-		this.updated_at = props.updated_at || undefined;
-		this.patient = props.patient || undefined;
+		this.appointment_id = props.appointment_id ?? undefined;
+		this.date = props.date ?? undefined;
+		this.patient_id = props.patient_id ?? undefined;
+		this.annotations = props.annotations ?? undefined;
+		this.created_at = props.created_at ?? undefined;
+		this.updated_at = props.updated_at ?? undefined;
+		this.patient = props.patient ?? undefined;
 	}
-	
+
 	get appointment_id(): number {
 		return this._appointment_id;
 	}

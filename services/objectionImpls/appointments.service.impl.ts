@@ -16,7 +16,7 @@ export default class AppointmentsServiceImpl implements AppointmentsService {
 	}
 
 	async findAll(): Promise<Appointment[]> {
-		let appointments: AppointmentObjection[] = await AppointmentObjection.query().withGraphFetched(['patients']);
+		let appointments: AppointmentObjection[] = await AppointmentObjection.query().withGraphFetched('[patient]');
 		return appointments.map((appointment) => new AppointmentModel(appointment));
 	}
 
@@ -26,7 +26,7 @@ export default class AppointmentsServiceImpl implements AppointmentsService {
 			// @ts-ignore
 			const appointmentInserted = new AppointmentModel(await AppointmentObjection.query(trx).insert(appointment));
 			await trx.commit();
-			return appointmentInserted;
+			return await this.findById(appointmentInserted.appointment_id);
 		} catch (error) {
 			await trx.rollback();
 			throw error;

@@ -15,7 +15,6 @@ export default class PatientModel {
 	private _appointments?: Appointment[];
 
 	constructor(props: any) {
-		console.log(props);
 		this.patient_id = props.patient_id ?? undefined;
 		this.name = props.name ?? undefined;
 		this.gender = props.gender ?? undefined;

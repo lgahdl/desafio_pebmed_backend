@@ -18,6 +18,7 @@ export default class PatientsAdapter {
 		};
 		struct.patient_id = patient.patient_id ?? undefined;
 		struct.name = patient.name ?? undefined;
+		struct.gender = patient.gender ?? undefined;
 		struct.height = patient.height ?? undefined;
 		struct.weight = patient.weight ?? undefined;
 		struct.phone_number = patient.phone_number ?? undefined;
