@@ -10,7 +10,7 @@ require('dotenv').config();
  * Module dependencies.
  */
 
-var debug = require('debug')('xml-to-db:server');
+var debug = require('debug')('desafio_pebmeb_backend:server');
 var http = require('http');
 
 /**

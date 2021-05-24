@@ -1,4 +1,5 @@
 export default class Utils {
+  
   static clone(obj: any): any {
     let copy;
 
@@ -34,14 +35,5 @@ export default class Utils {
 
     throw new Error("Unable to copy obj! Its type isn't supported.");
   }
-
-  static validateEmail(email: string):boolean {
-    const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return pattern.test(String(email).toLowerCase());
-  }
-
-  static validatePassword(password: string): boolean {
-    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20}$/;
-    return password?.match(pattern)?.length>0;
-  }
+  
 }
